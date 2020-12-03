@@ -1,0 +1,29 @@
+'''
+Created on Dec 3, 2020
+
+@author: kjsanche
+'''
+# read data from file
+file_handle = open('/Users\kjsanche\Desktop\inputday1.txt','r')
+with file_handle as f:
+    content = f.read()
+data = [int(i) for i in content.split()]
+
+# part 1 solution
+for i in data:
+    for j in data:
+        datasum = i+j
+        if datasum == 2020:
+            ans = i*j
+
+print(ans)
+
+# part 2 solution
+for i in data:
+    for j in data:
+        for k in data:
+            datasum = i+j+k
+            if datasum == 2020:
+                ans = i*j*k
+
+print(ans)
