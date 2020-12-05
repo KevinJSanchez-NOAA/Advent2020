@@ -1,0 +1,82 @@
+'''
+Created on Dec 5, 2020
+
+@author: kjsanche
+'''
+# read data from file
+file_handle = open('/Users/kjsanche/Documents/advent2020inputs/inputday3.txt','r')
+cnt = 0
+linecnt = 0;
+columncnt = 0
+with file_handle as f:
+    for line in f:# loop through each line
+        linecnt=linecnt+1
+        if linecnt == 1: #skip start line
+            continue
+        stripped_line = line.strip()
+        strlen = len(stripped_line)
+        columncnt = columncnt + 3
+        if columncnt >= strlen:
+            columncnt = columncnt-strlen #start from beginning of line if the end was reached
+        if stripped_line[columncnt] =="#":
+            cnt=cnt+1
+
+        
+print(cnt)
+file_handle.close()
+
+#part 2
+file_handle = open('/Users/kjsanche/Documents/advent2020inputs/inputday3.txt','r')
+cnt11 = 0
+cnt31 = 0
+cnt51 = 0
+cnt71 = 0
+cnt12 = 0
+linecnt = 0;
+columncnt11 = 0
+columncnt31 = 0
+columncnt51 = 0
+columncnt71 = 0
+columncnt12 = 0
+with file_handle as f:
+    for line in f:# loop through each line
+        linecnt=linecnt+1
+        if linecnt == 1: #skip start line
+            continue
+        stripped_line = line.strip()
+        strlen = len(stripped_line)
+        columncnt11 = columncnt11 + 1
+        columncnt31 = columncnt31 + 3
+        columncnt51 = columncnt51 + 5
+        columncnt71 = columncnt71 + 7
+        
+        if columncnt11 >= strlen:
+            columncnt11 = columncnt11-strlen #start from beginning of line if the end was reached
+        if columncnt31 >= strlen:
+            columncnt31 = columncnt31-strlen #start from beginning of line if the end was reached
+        if columncnt51 >= strlen:
+            columncnt51 = columncnt51-strlen #start from beginning of line if the end was reached
+        if columncnt71 >= strlen:
+            columncnt71 = columncnt71-strlen #start from beginning of line if the end was reached
+            
+        if stripped_line[columncnt11] =="#":
+            cnt11=cnt11+1
+        if stripped_line[columncnt31] =="#":
+            cnt31=cnt31+1
+        if stripped_line[columncnt51] =="#":
+            cnt51=cnt51+1
+        if stripped_line[columncnt71] =="#":
+            cnt71=cnt71+1
+            
+        if linecnt % 2 == 0: #skip every other line for last slope
+            continue
+        columncnt12 = columncnt12 + 1
+        if columncnt12 >= strlen:
+            columncnt12 = columncnt12-strlen #start from beginning of line if the end was reached
+        if stripped_line[columncnt12] =="#":
+            cnt12=cnt12+1
+print(cnt11*cnt31*cnt51*cnt71*cnt12)
+    
+    
+    
+  
