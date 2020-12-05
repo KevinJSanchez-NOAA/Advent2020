@@ -1,0 +1,74 @@
+'''
+Created on Dec 4, 2020
+
+@author: kjsanche
+'''
+
+# read data from file
+file_handle = open('/Users/kjsanche/Documents/advent2020inputs/inputday2.txt','r')
+cnt = 0
+
+with file_handle as f:
+    for line in f: # loop through each line
+        cnt_char = -1 # subtract first occurance
+        stripped_line = line.strip()
+        #find index of characters
+        colon_ind = stripped_line.index(':')
+        dash_ind = stripped_line.index('-')
+        char_rule = stripped_line[colon_ind-1]
+        if dash_ind > 1:
+            minchar = int(stripped_line[0:dash_ind])
+            print(stripped_line[0:dash_ind])
+            print(stripped_line[0])
+            print(stripped_line[1])
+            print(stripped_line[2])
+            print(stripped_line[3])
+            print(stripped_line[dash_ind])
+            print(stripped_line[0:dash_ind-1])
+            print(stripped_line[0:dash_ind+1])
+        else:
+            minchar = int(stripped_line[0])
+        if dash_ind+1 < colon_ind-2:
+            maxchar = int(stripped_line[dash_ind+1:colon_ind-2])
+        else:
+            maxchar = int(stripped_line[dash_ind+1])
+        
+        #count char
+        for i in stripped_line:
+            if i == char_rule:
+                cnt_char = cnt_char + 1
+        #determine if valid password
+        if cnt_char >= minchar and cnt_char <= maxchar:
+            cnt = cnt+1;
+print(cnt)
+file_handle.close()
+#part 2
+file_handle = open('/Users/kjsanche/Documents/advent2020inputs/inputday2.txt','r')
+cnt2 = 0
+with file_handle as f:
+    for line in f: # loop through each line
+        cnt_char = -1 # subtract first occurance
+        stripped_line = line.strip()
+        #find index of characters
+        colon_ind = stripped_line.index(':')+1
+        dash_ind = stripped_line.index('-')
+        char_rule = stripped_line[colon_ind-2]
+        
+        if dash_ind > 1:
+            minchar = int(stripped_line[0:dash_ind])
+        else:
+            minchar = int(stripped_line[0])
+        if dash_ind+1 < colon_ind-2:
+            maxchar = int(stripped_line[dash_ind+1:colon_ind-2])
+        else:
+            maxchar = int(stripped_line[dash_ind+1])
+        
+        print(stripped_line[minchar+colon_ind])
+        print(stripped_line[maxchar+colon_ind])
+        #test char
+        if stripped_line[minchar+colon_ind] == char_rule and stripped_line[maxchar+colon_ind] != char_rule:
+            cnt2 = cnt2+1;
+        if stripped_line[minchar+colon_ind] != char_rule and stripped_line[maxchar+colon_ind] == char_rule:
+            cnt2 = cnt2+1;
+print(cnt2)
+file_handle.close()
