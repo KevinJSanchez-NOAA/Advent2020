@@ -1,0 +1,85 @@
+'''
+Created on Dec 5, 2020
+
+@author: kjsanche
+'''
+import math
+###################################
+#Functions
+###################################
+def colrow_fun(char_val,minnum,maxnum):
+    midnum = (minnum+maxnum)/2
+    if char_val =='B' or char_val =='R':
+        minnum = math.ceil(midnum)
+
+    if char_val =='F' or char_val =='L':
+        maxnum = math.floor(midnum)
+
+    return minnum, maxnum
+
+#####################################
+#main code
+#####################################
+# read data from file
+file_handle = open('/Users/kjsanche/Documents/advent2020inputs/inputday5.txt','r')
+
+seatIDmax = 0
+with file_handle as f:
+    for line in f:# loop through each line
+        minnum = 0
+        maxnum = 127
+        stripped_line = line.strip()
+        for i in stripped_line[:7]:
+            minnum, maxnum = colrow_fun(i,minnum,maxnum)
+        
+        rownum = minnum
+        
+        minnum = 0
+        maxnum = 7
+        for i in stripped_line[7:]:
+            minnum, maxnum = colrow_fun(i,minnum,maxnum)
+        colnum = minnum
+        seatIDtmp = rownum*8+colnum
+        if seatIDtmp > seatIDmax:
+            seatIDmax = seatIDtmp
+print(seatIDmax)
+file_handle.close()        
+        
+#part 2
+#####################################
+#main code
+#####################################
+# read data from file
+file_handle = open('/Users/kjsanche/Documents/advent2020inputs/inputday5.txt','r')
+
+seatID = []
+with file_handle as f:
+    for line in f:# loop through each line
+        minnum = 0
+        maxnum = 127
+        stripped_line = line.strip()
+        for i in stripped_line[:7]:
+            minnum, maxnum = colrow_fun(i,minnum,maxnum)
+        
+        rownum = minnum
+        
+        minnum = 0
+        maxnum = 7
+        for i in stripped_line[7:]:
+            minnum, maxnum = colrow_fun(i,minnum,maxnum)
+        colnum = minnum
+        seatID.append(rownum*8+colnum) # append seatIDs to array
+        
+file_handle.close()  
+
+#loop through seatID array
+for i in seatID:
+    if i-1 not in seatID and i-2 in seatID: #find case when seatID-1 is missing and seatID-2 is not missing
+        print(i-1)
+
+
+
+
+
+
+
