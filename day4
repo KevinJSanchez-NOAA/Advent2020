@@ -1,0 +1,155 @@
+'''
+Created on Dec 5, 2020
+
+@author: kjsanche
+'''
+import re
+# read data from file
+file_handle = open('/Users/kjsanche/Documents/advent2020inputs/inputday4.txt','r')
+
+cntfields = 0
+cntvalid = 0
+flagcid = -1
+with file_handle as f:
+    for line in f:# loop through each line
+        stripped_line = line.strip()
+        if len(stripped_line) == 0: #when reaching a blank line, determine if field is valid and reset counters and flag
+            if cntfields == 8:
+                cntvalid = cntvalid + 1 
+            if cntfields == 7 and flagcid == -1:
+                cntvalid = cntvalid + 1
+            cntfields = 0
+            flagcid = -1
+            continue
+        
+        for i in stripped_line:
+            if i == ':': # find number of fields (all have a :)
+                cntfields = cntfields + 1
+        if flagcid < 0: # find if cid: field is included
+            flagcid = stripped_line.find('cid:')
+
+#determine if last one is valid
+if cntfields == 8:
+    cntvalid = cntvalid + 1 
+if cntfields == 7 and flagcid == -1:
+    cntvalid = cntvalid + 1
+
+#answer
+print(cntvalid)
+file_handle.close()
+
+
+#part 2
+#########################
+#functions for each field
+#########################
+def byr_fun(fieldval):
+    if int(fieldval) >= 1920 and int(fieldval) <= 2002:
+        return 1
+    else:
+        return 0
+def iyr_fun(fieldval):
+    if int(fieldval) >= 2010 and int(fieldval) <= 2020:
+        return 1
+    else:
+        return 0
+def eyr_fun(fieldval):
+    if int(fieldval) >= 2020 and int(fieldval) <= 2030:
+        return 1
+    else:
+        return 0
+def hgt_fun(fieldval):
+    if fieldval.find('cm')>0:
+        ind = fieldval.find('cm')
+        if int(fieldval[:ind]) >= 150 and int(fieldval[:ind]) <= 193:
+            return 1
+        else:
+            return 0
+    if fieldval.find('in')>0:
+        ind = fieldval.find('in')
+        if int(fieldval[:ind]) >= 59 and int(fieldval[:ind]) <= 76:
+            return 1
+        else:
+            return 0
+    if fieldval.find('cm') < 0 and fieldval.find('in') < 0:
+        return 0
+    
+# fucntion for hcl validation
+def special_match(strg, search=re.compile(r'[^a-f0-9]').search):
+    return not bool(search(strg))
+
+def hcl_fun(fieldval):
+    if fieldval[0] == '#':
+        if special_match(fieldval[1:]):
+            return 1
+        else:
+            return 0
+    else:
+        return 0
+def ecl_fun(fieldval):
+    if fieldval == 'amb' or fieldval == 'blu' or fieldval == 'brn' or fieldval == 'gry' or fieldval == 'grn' or fieldval == 'hzl' or fieldval == 'oth':
+        return 1
+    else:
+        return 0
+def pid_fun(fieldval):
+    if len(fieldval) == 9:
+        return 1
+    else:
+        return 0
+
+
+
+#######################
+#main code
+#######################
+file_handle = open('/Users/kjsanche/Documents/advent2020inputs/inputday4.txt','r')
+
+cntfields = 0
+cntvalid = 0
+
+with file_handle as f:
+    for line in f:# loop through each line
+        stripped_line = line.strip()
+        if len(stripped_line) == 0: #when reaching a blank line, determine if field is valid and reset counters and flag
+            if cntfields == 7:
+                cntvalid = cntvalid + 1 
+            cntfields = 0
+            continue
+        
+        
+        # find all indices of :
+        colon_ind = [i for i, x in enumerate(stripped_line) if x == ":"]
+        numfields = len(colon_ind)
+        loop_cnt = 0
+        for i in colon_ind:
+            loop_cnt = loop_cnt+1
+            fieldname = stripped_line[i-3:i]
+            if numfields>loop_cnt:
+                fieldval = stripped_line[i+1:colon_ind[loop_cnt]-4]
+            else:
+                fieldval = stripped_line[i+1:]
+            # determine if fields are valid
+            if fieldname == 'byr':
+                cntfields = cntfields + byr_fun(fieldval)
+            if fieldname == 'iyr':
+                cntfields = cntfields + iyr_fun(fieldval)        
+            if fieldname == 'eyr':
+                cntfields = cntfields + eyr_fun(fieldval)            
+            if fieldname == 'hgt':
+                cntfields = cntfields + hgt_fun(fieldval)
+            if fieldname == 'hcl':
+                cntfields = cntfields + hcl_fun(fieldval)            
+            if fieldname == 'ecl':
+                cntfields = cntfields + ecl_fun(fieldval)            
+            if fieldname == 'pid':
+                cntfields = cntfields + pid_fun(fieldval)            
+        
+
+#determine if last one is valid
+if cntfields == 7:
+    cntvalid = cntvalid + 1 
+
+
+#answer
+print(cntvalid)
+file_handle.close()        
